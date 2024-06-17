@@ -1,30 +1,85 @@
-﻿using File = System.IO.File;
-
-namespace Text_reader
-
+﻿public class Program
 {
-    internal class Program
+    internal List<string> CheckAllFiles(string path, string keysPath)
     {
-        static void Main(string[] args)
+        string[] files = Directory.GetFiles(path, "*.txt");         // тук сложи path към базата данни
+        var keys = File.ReadAllLines(keysPath).ToList();                    // тук сложи path към ключовете
+
+        List<string> unused = new List<string>(keys);
+        List<string> used = new List<string>();
+
+        var search = new Program();
+        foreach (var file in files)
         {
-            string path = Settings.Path;
-            string keysPath = Settings.KeyPath;
-
-            if (!Directory.Exists(path) || !File.Exists(keysPath))
+            var tmpUsed = search.Ckeck(file, keys);
+            used.AddRange(tmpUsed);
+            if (tmpUsed.Count > 0)
             {
-                Console.Write("Type the path of the data base with all the files: ");
-                path = Console.ReadLine() ?? "";
-                Console.WriteLine();
+                unused.RemoveAll(key => used.Contains(key));
+            }
+        }
+        return unused;
+    }
 
-                Console.Write("Type the path of the file containing keys: ");
-                keysPath = Console.ReadLine() ?? "";
+    internal List<string> Ckeck(string file, List<string> keys)
+    {
+        List<string> results = [];
+
+        foreach (var key in keys)
+        {
+            string line;
+            StreamReader reader = null!;
+
+            try
+            {
+                reader = new StreamReader(file);
+                line = reader.ReadLine()!;
+
+                while (line != null)
+                {
+                    if (line.Contains(key!))
+                    {
+                        results.Add(key);
+                    }
+                    line = reader.ReadLine()!;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine();
+                Console.WriteLine(e.Message);
                 Console.WriteLine();
             }
-
-            var search = new Search();
-            List<string> unused = search.CheckAllFiles(path, keysPath);
-            
-            search.PrintFinal(unused);
+            finally
+            {
+                reader.Close();
+            }
         }
+        return results;    
+    }
+    
+
+    public void PrintFinal(List<string> unusedKeys)
+    {
+        Console.WriteLine($"Unused keys: {unusedKeys.Count}");
+        Console.WriteLine("Keys:");
+        Console.WriteLine();
+        foreach (string key in unusedKeys)
+        {
+            Console.WriteLine(key);
+        }
+    }
+
+    public void PrintPath()
+    {
+        Console.WriteLine();
+        Console.WriteLine("-----------------------------------------");
+        Console.Write("Please enter path to the file containing everything: ");
+    }
+    public void PrintPathKeys()
+    {
+        Console.WriteLine();
+        Console.WriteLine("-----------------------------------------");
+        Console.Write("Please enter path to the file containing only the keywords: ");
     }
 }
