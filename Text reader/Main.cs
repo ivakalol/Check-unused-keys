@@ -7,31 +7,27 @@ namespace Text_reader
     {
         static void Main(string[] args)
         {
-            var search = new global::Program();
+            var search = new Search();
+            var print = new Print();
 
-            search.PrintPathKeys();
+            print.PrintPathKeys();
             string keysPath = Console.ReadLine() ?? "";
 
-            search.PrintPath();
+            print.PrintPath();
             string path = Console.ReadLine() ?? "";
             
 
             while (!Directory.Exists(path) || !File.Exists(keysPath))
             {
-                Console.WriteLine();
-                Console.WriteLine("========================================");
-                Console.WriteLine("ERROR PATHS! PLEASE ENTER THEM CORRECTLY");
-                Console.WriteLine("========================================");
-                Console.WriteLine();
-
-                search.PrintPathKeys();
+                print.Error();
+                print.PrintPathKeys();
                 keysPath = Console.ReadLine() ?? "";
-                search.PrintPath();
+                print.PrintPath();
                 path = Console.ReadLine() ?? "";               
             }
 
             List<string> unused = search.CheckAllFiles(path, keysPath);            
-            search.PrintFinal(unused);
+            print.PrintFinal(unused);
         }
     }
 }

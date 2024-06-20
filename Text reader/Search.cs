@@ -1,4 +1,4 @@
-﻿public class Program
+﻿public class Search
 {
     internal List<string> CheckAllFiles(string path, string keysPath)
     {
@@ -8,7 +8,7 @@
         List<string> unused = new List<string>(keys);
         List<string> used = new List<string>();
 
-        var search = new Program();
+        var search = new Search();
         foreach (var file in files)
         {
             var tmpUsed = search.Ckeck(file, keys);
@@ -56,30 +56,5 @@
             }
         }
         return results;    
-    }
-    
-
-    public void PrintFinal(List<string> unusedKeys)
-    {
-        Console.WriteLine($"Unused keys: {unusedKeys.Count}");
-        Console.WriteLine("Keys:");
-        Console.WriteLine();
-        foreach (string key in unusedKeys)
-        {
-            Console.WriteLine(key);
-        }
-    }
-
-    public void PrintPath()
-    {
-        Console.WriteLine();
-        Console.WriteLine("-----------------------------------------");
-        Console.Write("Please enter path to the file containing everything: ");
-    }
-    public void PrintPathKeys()
-    {
-        Console.WriteLine();
-        Console.WriteLine("-----------------------------------------");
-        Console.Write("Please enter path to the file containing only the keywords: ");
     }
 }
