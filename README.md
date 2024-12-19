@@ -22,4 +22,4 @@ This program verifies whether all lines from a specified `.txt` file are present
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-repository.git
+   git clone [https://github.com/ivakalol/Check-unused-keys](https://github.com/ivakalol/Check-unused-keys)
